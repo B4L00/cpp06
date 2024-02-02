@@ -6,7 +6,7 @@
 /*   By: larmenou <larmenou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 11:34:09 by larmenou          #+#    #+#             */
-/*   Updated: 2024/02/01 14:35:47 by larmenou         ###   ########.fr       */
+/*   Updated: 2024/02/02 12:58:09 by larmenou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,34 +31,92 @@ ScalarConverter::~ScalarConverter()
 
 void ScalarConverter::convert(std::string str)
 {
-	int 	i;
-	double	d;
-	char	c;
-	float	f;
-
-	
-
-	if (str.find('f'))
-		std::istringstream(str) >> f;
-	else if (str.find('.'))
-		std::istringstream(str) >> d;
-	
-	for (int j = 0; j < str.length(); j++)
+	int 			i = 0;
+	double			d = 0.0;
+	char			c = 0;
+	float			f = 0.0f;
+	unsigned int	j = 0;
+	int 			cpt_dot = 0;
+	int 			cpt_f = 0;
+ 
+	if (str.length() == 1 && isprint(str[0]) && !isdigit(str[0]))
 	{
-		
-	}
-	
-	std::istringstream(str) >> i;
-	
-	c = 0;
-	if (i > 31 && i < 127)
-		c = char(i);
-	
-	if (c == 0)
-		std::cout << "char: Non displayable" << std::endl;
-	else
+		c = str[0];
 		std::cout << "char: " << c << std::endl;
-	std::cout << "int: " << i << std::endl;
-	std::cout << "float:" << f << std::endl;
-	std::cout << "double: " << d << std::endl;
+		std::cout << "int: " << static_cast<int>(c) << std::endl;
+		std::cout << "float: " << static_cast<float>(c) << ".0f" << std::endl;
+		std::cout << "double: " << static_cast<double>(c) << ".0" << std::endl;
+		return ;
+	}
+
+	/* 
+		Probleme avec :
+		f42. ok
+		42. ok
+		42.f ok
+	*/
+	
+	while (str[j])
+	{
+		if ((!isdigit(str[j]) && (str[j] != '.' && str[j] != 'f'))
+			|| (str[j] == 'f' && j != str.length() - 1)
+			|| (j != 0 && str[j] == 'f' && !isdigit(str[j-1]))
+			|| (str[j] == '.' && (j == str.length() - 1 || j == 0)))
+		{
+			std::cout << "char: impossible" << std::endl;
+			std::cout << "int: impossible" << std::endl;
+			std::cout << "float: nanf" << std::endl;
+			std::cout << "double: nan" << std::endl;
+			return ;
+		}
+		else if (str[j] == '.')
+			cpt_dot ++;
+		else if (str[j] == 'f' && j == str.length() - 1)
+			cpt_f ++;
+		j++;
+	}
+	if (cpt_f == 1 && cpt_dot == 1)
+	{
+		f = atof(str.c_str());
+		c = static_cast<char>(f);
+		if (c)
+			std::cout << "char: '" << c << "'" << std::endl;
+		else
+			std::cout << "char: Non displayable" << std::endl;
+		std::cout << "int: " << static_cast<int>(f) << std::endl;
+		std::cout << "float: " << f << ".0f" << std::endl;
+		std::cout << "double: " << static_cast<double>(f) << ".0" << std::endl;
+		return ;
+	}
+	else if (cpt_dot == 1 && cpt_f == 0)
+	{
+		d = strtod(str.c_str(), NULL);
+		c = static_cast<char>(d);
+		if (c)
+			std::cout << "char: '" << c << "'" << std::endl;
+		else
+			std::cout << "char: Non displayable" << std::endl;
+		std::cout << "int: " << static_cast<int>(d) << std::endl;
+		std::cout << "float: " << static_cast<float>(d) << ".0f" << std::endl;
+		std::cout << "double: " << d << ".0" << std::endl;
+		return ;
+	}
+	else if (cpt_dot == 0 && cpt_f == 0)
+	{
+		i = atoi(str.c_str());
+		c = static_cast<char>(i);
+		if (c)
+			std::cout << "char: '" << c << "'" << std::endl;
+		else
+			std::cout << "char: Non displayable" << std::endl;
+		std::cout << "int: " << i << std::endl;
+		std::cout << "float: " << static_cast<float>(i) << ".0f" << std::endl;
+		std::cout << "double: " << static_cast<double>(i) << ".0" << std::endl;
+		return ;
+	}
+	std::cout << "char: impossible" << std::endl;
+	std::cout << "int: impossible" << std::endl;
+	std::cout << "float: nanf" << std::endl;
+	std::cout << "double: nan" << std::endl;
+	
 }

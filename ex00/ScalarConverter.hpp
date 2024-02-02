@@ -6,7 +6,7 @@
 /*   By: larmenou <larmenou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 11:34:06 by larmenou          #+#    #+#             */
-/*   Updated: 2024/02/01 14:34:38 by larmenou         ###   ########.fr       */
+/*   Updated: 2024/02/02 12:53:06 by larmenou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 # include <iostream>
 # include <sstream>
 # include <cctype>
+# include <stdlib.h>
+# include <cstdlib>
 
 class ScalarConverter
 {
