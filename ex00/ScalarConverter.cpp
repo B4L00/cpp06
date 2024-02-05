@@ -6,7 +6,7 @@
 /*   By: larmenou <larmenou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 11:34:09 by larmenou          #+#    #+#             */
-/*   Updated: 2024/02/02 12:58:09 by larmenou         ###   ########.fr       */
+/*   Updated: 2024/02/05 10:46:27 by larmenou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,14 @@ void ScalarConverter::convert(std::string str)
 		f42. ok
 		42. ok
 		42.f ok
+		+42-
+		+++42
+		---42
 	*/
-	
+
 	while (str[j])
 	{
-		if ((!isdigit(str[j]) && (str[j] != '.' && str[j] != 'f'))
+		if ((!isdigit(str[j]) && (str[j] != '.' && str[j] != 'f' && str[j] != '-' && str[j] != '+'))
 			|| (str[j] == 'f' && j != str.length() - 1)
 			|| (j != 0 && str[j] == 'f' && !isdigit(str[j-1]))
 			|| (str[j] == '.' && (j == str.length() - 1 || j == 0)))
@@ -79,7 +82,7 @@ void ScalarConverter::convert(std::string str)
 	{
 		f = atof(str.c_str());
 		c = static_cast<char>(f);
-		if (c)
+		if (c && c > 0)
 			std::cout << "char: '" << c << "'" << std::endl;
 		else
 			std::cout << "char: Non displayable" << std::endl;
@@ -92,7 +95,7 @@ void ScalarConverter::convert(std::string str)
 	{
 		d = strtod(str.c_str(), NULL);
 		c = static_cast<char>(d);
-		if (c)
+		if (c && c > 0)
 			std::cout << "char: '" << c << "'" << std::endl;
 		else
 			std::cout << "char: Non displayable" << std::endl;
@@ -105,7 +108,7 @@ void ScalarConverter::convert(std::string str)
 	{
 		i = atoi(str.c_str());
 		c = static_cast<char>(i);
-		if (c)
+		if (c && c > 0)
 			std::cout << "char: '" << c << "'" << std::endl;
 		else
 			std::cout << "char: Non displayable" << std::endl;
