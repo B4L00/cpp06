@@ -6,7 +6,7 @@
 /*   By: larmenou <larmenou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 11:34:09 by larmenou          #+#    #+#             */
-/*   Updated: 2024/02/05 14:53:56 by larmenou         ###   ########.fr       */
+/*   Updated: 2024/02/09 13:21:16 by larmenou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ void ScalarConverter::convert(std::string str)
 	unsigned int		j = 0;
 	int 				cpt_dot = 0;
 	int 				cpt_f = 0;
-	int					cpt_plus_minus = 0;
+	int					cpt_sign = 0;
+	int					cpt_e = 0;
 	std::stringstream	ss;
  
 	if (str.length() == 1 && isprint(str[0]) && !isdigit(str[0]))
@@ -53,10 +54,16 @@ void ScalarConverter::convert(std::string str)
 
 	while (str[j])
 	{
-		if ((!isdigit(str[j]) && (str[j] != '.' && str[j] != 'f' && str[j] != '-' && str[j] != '+' && str[j] != 'e'))
-			|| (str[j] == 'f' && j != str.length() - 1)
-			|| (j != 0 && str[j] == 'f' && !isdigit(str[j - 1]))
-			|| (str[j] == '.' && (j == str.length() - 1 || j == 0)))
+		if (j != 0 && str[j] == 'f' && isdigit(str[j - 1]))
+			cpt_f ++;
+		else if (str[j] == '.' && j > 0 && j < str.length() - 1 && isdigit(str[j - 1]) && isdigit(str[j + 1]))
+			cpt_dot ++;
+		else if (str[j] == 'e' && j > 0 && j < str.length() - 1 && isdigit(str[j - 1]) && (isdigit(str[j + 1]) || str[j + 1] == '-' || str[j + 1] == '+'))
+			cpt_e ++;
+		//else if ((j == 0 && (str[j] == '-' || str[j] == '+') && str[j + 1] && isdigit(str[j + 1])) || (j > 0 && str[j - 1] == 'e' && (str[j] == '-' || str[j] == '+') && str[j + 1] && isdigit(str[j + 1])))
+		else if ((j == 0 || (j > 0 && str[j - 1] == 'e')) && ((str[j] == '-' || str[j] == '+') && str[j + 1] && isdigit(str[j + 1])))
+			cpt_sign ++;
+		else if (!isdigit(str[j]))
 		{
 			std::cout << "char: impossible" << std::endl;
 			std::cout << "int: impossible" << std::endl;
@@ -64,18 +71,14 @@ void ScalarConverter::convert(std::string str)
 			std::cout << "double: nan" << std::endl;
 			return ;
 		}
-		else if (str[j] == '.')
-			cpt_dot ++;
-		else if (str[j] == 'f' && j == str.length() - 1)
-			cpt_f ++;
-		else if (str[j] == '-' || str[j] == '+')
-			cpt_plus_minus ++;
 		j++;
 	}
-
-	if (cpt_f == 1 && cpt_dot == 1 && cpt_plus_minus < 2)
+	
+	if (cpt_f == 1 && cpt_sign < 3 && cpt_dot < 2 && cpt_e < 2)
 	{
 		f = atof(str.c_str());
+		//ss << str;
+		//ss >> f;
 		c = static_cast<char>(f);
 		if (c && c > 0)
 			std::cout << "char: '" << c << "'" << std::endl;
@@ -87,9 +90,11 @@ void ScalarConverter::convert(std::string str)
 		return ;
 	}
 	
-	else if (cpt_dot == 1 && cpt_f == 0 && cpt_plus_minus < 2)
+	else if (cpt_f == 0 && cpt_sign < 3 && cpt_dot < 2 && cpt_e < 2)
 	{
 		d = strtod(str.c_str(), NULL);
+		//ss << str;
+		//ss >> d;
 		c = static_cast<char>(d);
 		if (c && c > 0)
 			std::cout << "char: '" << c << "'" << std::endl;
@@ -101,11 +106,11 @@ void ScalarConverter::convert(std::string str)
 		return ;
 	}
 	
-	else if (cpt_dot == 0 && cpt_f == 0 && cpt_plus_minus < 2)
+	else if (cpt_f == 0 && cpt_sign < 3 && cpt_dot < 2 && cpt_e < 2)
 	{
-		//i = atoi(str.c_str());
-		ss << str;
-		ss >> i;
+		i = atoi(str.c_str());
+		//ss << str;
+		//ss >> i;
 		c = static_cast<char>(i);
 		if (c && c > 0)
 			std::cout << "char: '" << c << "'" << std::endl;
