@@ -6,7 +6,7 @@
 /*   By: larmenou <larmenou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 11:34:09 by larmenou          #+#    #+#             */
-/*   Updated: 2024/02/09 13:21:16 by larmenou         ###   ########.fr       */
+/*   Updated: 2024/02/12 13:38:11 by larmenou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,24 @@ void ScalarConverter::convert(std::string str)
 		std::cout << "double: " << static_cast<double>(c) << ".0" << std::endl;
 		return ;
 	}
+	
+	if (str == "+inf" || str == "inf" || str == "+inff" || str == "inff")
+	{
+		std::cout << "char: Non displayable" << std::endl;
+		std::cout << "int: " << std::numeric_limits<int>::max() << std::endl;
+		std::cout << "float: +inff" << std::endl;
+		std::cout << "double: +inf" << std::endl;
+		return ;
+	}
+	
+	if (str == "-inf" || str == "-inff")
+	{
+		std::cout << "char: Non displayable" << std::endl;
+		std::cout << "int: " << std::numeric_limits<int>::min() << std::endl;
+		std::cout << "float: -inff" << std::endl;
+		std::cout << "double: -inf" << std::endl;
+		return ;
+	}
 
 	while (str[j])
 	{
@@ -60,7 +78,6 @@ void ScalarConverter::convert(std::string str)
 			cpt_dot ++;
 		else if (str[j] == 'e' && j > 0 && j < str.length() - 1 && isdigit(str[j - 1]) && (isdigit(str[j + 1]) || str[j + 1] == '-' || str[j + 1] == '+'))
 			cpt_e ++;
-		//else if ((j == 0 && (str[j] == '-' || str[j] == '+') && str[j + 1] && isdigit(str[j + 1])) || (j > 0 && str[j - 1] == 'e' && (str[j] == '-' || str[j] == '+') && str[j + 1] && isdigit(str[j + 1])))
 		else if ((j == 0 || (j > 0 && str[j - 1] == 'e')) && ((str[j] == '-' || str[j] == '+') && str[j + 1] && isdigit(str[j + 1])))
 			cpt_sign ++;
 		else if (!isdigit(str[j]))
@@ -76,11 +93,30 @@ void ScalarConverter::convert(std::string str)
 	
 	if (cpt_f == 1 && cpt_sign < 3 && cpt_dot < 2 && cpt_e < 2)
 	{
-		f = atof(str.c_str());
-		//ss << str;
-		//ss >> f;
+		ss << str;
+		ss >> f;
+
+		if (ss.fail() || f < std::numeric_limits<float>::min() || f > std::numeric_limits<float>::max())
+		{
+			std::cout << "char: Non displayable" << std::endl;
+			if (str[0] == '-')
+			{
+				std::cout << "int: " << std::numeric_limits<int>::min() << std::endl;
+       			std::cout << "float: -inff" << std::endl;
+				std::cout << "double: -inf" << std::endl;
+			}
+			else
+			{
+				std::cout << "int: " << std::numeric_limits<int>::max() << std::endl;
+       			std::cout << "float: +inff" << std::endl;
+				std::cout << "double: +inf" << std::endl;
+			}
+			return ;
+		}
+		
 		c = static_cast<char>(f);
-		if (c && c > 0)
+
+		if (c && c >= ' ' && c <= '~')
 			std::cout << "char: '" << c << "'" << std::endl;
 		else
 			std::cout << "char: Non displayable" << std::endl;
@@ -89,36 +125,62 @@ void ScalarConverter::convert(std::string str)
 		std::cout << "double: " << static_cast<double>(f) << ".0" << std::endl;
 		return ;
 	}
-	
-	else if (cpt_f == 0 && cpt_sign < 3 && cpt_dot < 2 && cpt_e < 2)
+
+	else if (cpt_f == 0 && cpt_sign < 3 && cpt_dot == 0 && cpt_e < 2)
 	{
-		d = strtod(str.c_str(), NULL);
-		//ss << str;
-		//ss >> d;
-		c = static_cast<char>(d);
-		if (c && c > 0)
-			std::cout << "char: '" << c << "'" << std::endl;
-		else
-			std::cout << "char: Non displayable" << std::endl;
-		std::cout << "int: " << static_cast<int>(d) << std::endl;
-		std::cout << "float: " << static_cast<float>(d) << ".0f" << std::endl;
-		std::cout << "double: " << d << ".0" << std::endl;
-		return ;
-	}
-	
-	else if (cpt_f == 0 && cpt_sign < 3 && cpt_dot < 2 && cpt_e < 2)
-	{
-		i = atoi(str.c_str());
-		//ss << str;
-		//ss >> i;
+		ss << str;
+		ss >> i;
 		c = static_cast<char>(i);
-		if (c && c > 0)
+		if (c && c >= ' ' && c <= '~')
 			std::cout << "char: '" << c << "'" << std::endl;
 		else
 			std::cout << "char: Non displayable" << std::endl;
 		std::cout << "int: " << i << std::endl;
 		std::cout << "float: " << static_cast<float>(i) << ".0f" << std::endl;
 		std::cout << "double: " << static_cast<double>(i) << ".0" << std::endl;
+		return ;
+	}
+	
+	else if (cpt_f == 0 && cpt_sign < 3 && cpt_dot < 3 && cpt_e < 2)
+	{
+		ss << str;
+		ss >> d;
+
+		if (ss.fail() || d < std::numeric_limits<double>::min() || d > std::numeric_limits<double>::max())
+		{
+			std::cout << "char: Non displayable" << std::endl;
+			if (str[0] == '-')
+			{
+				std::cout << "int: " << std::numeric_limits<int>::min() << std::endl;
+       			std::cout << "float: -inff" << std::endl;
+				std::cout << "double: -inf" << std::endl;
+			}
+			else
+			{
+				std::cout << "int: " << std::numeric_limits<int>::max() << std::endl;
+       			std::cout << "float: +inff" << std::endl;
+				std::cout << "double: +inf" << std::endl;
+			}
+			return ;
+		}
+
+		c = static_cast<char>(d);
+		if (c && c >= ' ' && c <= '~')
+			std::cout << "char: '" << c << "'" << std::endl;
+		else
+			std::cout << "char: Non displayable" << std::endl;
+			
+		std::cout << "int: " << static_cast<int>(d) << std::endl;
+		
+		f = static_cast<float>(d);
+		if (f < std::numeric_limits<float>::min())
+			std::cout << "float: 0.0f" << std::endl;
+		else if (f > std::numeric_limits<float>::max())
+			std::cout << "float: +inff" << std::endl;
+		else
+			std::cout << "float: " << f << ".0f" << std::endl;
+			
+		std::cout << "double: " << d << ".0" << std::endl;
 		return ;
 	}
 	
