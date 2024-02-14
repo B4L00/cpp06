@@ -5,6 +5,7 @@ OBJFLAGS 	:=	-c
 NAME		:=	convert
 
 SRCS_F		:= 	main \
+				convertTypes \
 				ScalarConverter
 
 SRCS		:=	$(addsuffix .cpp, $(SRCS_F))
