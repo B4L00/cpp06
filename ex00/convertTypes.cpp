@@ -6,7 +6,7 @@
 /*   By: larmenou <larmenou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 13:12:28 by larmenou          #+#    #+#             */
-/*   Updated: 2024/02/14 13:37:51 by larmenou         ###   ########.fr       */
+/*   Updated: 2024/02/14 15:10:28 by larmenou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,18 +25,19 @@ void convertDouble(std::string str, bool notInt)
 
 	c = static_cast<char>(d);
 	i = static_cast<int>(d);
-	if (i == d)
+	
+	if (notInt)
+	{
+		std::cout << "char: impossible" << std::endl;
+		std::cout << "int: impossible" << std::endl;
+	}
+	else
 	{
 		if (c && isprint(c))
 			std::cout << "char: '" << c << "'" << std::endl;
 		else
 			std::cout << "char: Non displayable" << std::endl;
 		std::cout << "int: " << i << std::endl;
-	}
-	else if (notInt || i != d)
-	{
-		std::cout << "char: impossible" << std::endl;
-		std::cout << "int: impossible" << std::endl;
 	}
 	
 	f = static_cast<float>(d);
@@ -107,8 +108,9 @@ void convertFloat(std::string str)
 	}
 	
 	c = static_cast<char>(f);
+	i = static_cast<int>(f);
 
-	if (i == f)
+	if (i == floor(f))
 	{
 		if (c && isprint(c))
 			std::cout << "char: '" << c << "'" << std::endl;
@@ -116,7 +118,7 @@ void convertFloat(std::string str)
 			std::cout << "char: Non displayable" << std::endl;
 		std::cout << "int: " << i << std::endl;
 	}
-	else if (i != f)
+	else
 	{
 		std::cout << "char: impossible" << std::endl;
 		std::cout << "int: impossible" << std::endl;
