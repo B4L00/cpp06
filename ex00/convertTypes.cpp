@@ -6,13 +6,13 @@
 /*   By: larmenou <larmenou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 13:12:28 by larmenou          #+#    #+#             */
-/*   Updated: 2024/02/14 15:10:28 by larmenou         ###   ########.fr       */
+/*   Updated: 2024/02/15 09:09:54 by larmenou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ScalarConverter.hpp"
 
-void convertDouble(std::string str, bool notInt)
+void convertDouble(std::string str)
 {
 	std::stringstream	ss;
 	double				d = 0.0;
@@ -24,20 +24,20 @@ void convertDouble(std::string str, bool notInt)
 	ss >> d;
 
 	c = static_cast<char>(d);
-	i = static_cast<int>(d);
 	
-	if (notInt)
+	if (d >= std::numeric_limits<int>::min() && d <= std::numeric_limits<int>::max())
 	{
-		std::cout << "char: impossible" << std::endl;
-		std::cout << "int: impossible" << std::endl;
-	}
-	else
-	{
+		i = static_cast<int>(d);
 		if (c && isprint(c))
 			std::cout << "char: '" << c << "'" << std::endl;
 		else
 			std::cout << "char: Non displayable" << std::endl;
 		std::cout << "int: " << i << std::endl;
+	}
+	else
+	{
+		std::cout << "char: impossible" << std::endl;
+		std::cout << "int: impossible" << std::endl;
 	}
 	
 	f = static_cast<float>(d);
@@ -45,7 +45,7 @@ void convertDouble(std::string str, bool notInt)
 		std::cout << "float: " << f << ".0f" << std::endl;
 	else
 		std::cout << "float: " << f << "f" << std::endl;
-		
+	
 	if (ss.fail() && str[0] == '-')
 		std::cout << "double: -inf" << std::endl;
 	else if (ss.fail())
@@ -65,7 +65,7 @@ void convertInt(std::string str)
 	
 	if (ss.fail())
 	{
-		convertDouble(str, 1);
+		convertDouble(str);
 		return ;
 	}
 
@@ -110,7 +110,7 @@ void convertFloat(std::string str)
 	c = static_cast<char>(f);
 	i = static_cast<int>(f);
 
-	if (i == floor(f))
+	if (f >= std::numeric_limits<int>::min() && f <= std::numeric_limits<int>::max())
 	{
 		if (c && isprint(c))
 			std::cout << "char: '" << c << "'" << std::endl;

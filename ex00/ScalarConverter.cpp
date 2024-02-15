@@ -6,7 +6,7 @@
 /*   By: larmenou <larmenou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 11:34:09 by larmenou          #+#    #+#             */
-/*   Updated: 2024/02/14 14:04:21 by larmenou         ###   ########.fr       */
+/*   Updated: 2024/02/15 08:52:16 by larmenou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void ScalarConverter::convert(std::string str)
 	
 	else if (cpt_f == 0 && cpt_sign < 2 && cpt_dot < 2)
 	{
-		convertDouble(str, 0);
+		convertDouble(str);
 		return ;
 	}
 	

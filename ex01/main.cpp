@@ -6,7 +6,7 @@
 /*   By: larmenou <larmenou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 10:53:16 by larmenou          #+#    #+#             */
-/*   Updated: 2024/02/05 11:13:43 by larmenou         ###   ########.fr       */
+/*   Updated: 2024/02/15 10:53:17 by larmenou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,45 +15,37 @@
 
 int main()
 {
-	Data d;
-	Data* c = new Data();
-	uintptr_t u;
+	Data* data = new Data();
+	Data *data_deserialized;
+	uintptr_t raw;
 	int i = 42;
 
-	std::cout << "Adresses comparison :" << std::endl;
-	std::cout << "d: " << &d << std::endl;
-	std::cout << "c: " << c << std::endl;
+	std::cout << "data adress: " << data << std::endl;
 	std::cout << std::endl;
 
-	std::cout << "d.getNumber() should return 0: ";
-	std::cout << d.getNumber() << std::endl;
-	std::cout << "c->getNumber() should return 0: ";
-	std::cout << c->getNumber() << std::endl;
+	std::cout << "setNumber(42)" << std::endl;
+	data->setNumber(42);
+	
+	std::cout << "data->getNumber() should return " << i << ": ";
+	std::cout << data->getNumber() << std::endl;
 	std::cout << std::endl;
 
 	std::cout << "Serialization" << std::endl;
-	u = Serializer::serialize(&d);
-	d.setNumber(i);
+	raw = Serializer::serialize(data);
+	std::cout << "raw: " << raw << std::endl;
 
-	std::cout << "d.getNumber() should return " << i << ": ";
-	std::cout << d.getNumber() << std::endl;
-	std::cout << "c->getNumber() should return 0: ";
-	std::cout << c->getNumber() << std::endl;
+	std::cout << "data->getNumber() should return " << i << ": ";
+	std::cout << data->getNumber() << std::endl;
 	std::cout << std::endl;
 	
 	std::cout << "Deserialization" << std::endl;
-	delete c;
-	c = Serializer::deserialize(u);
+	data_deserialized = Serializer::deserialize(raw);
 
-	std::cout << "d.getNumber() should return " << i << ": ";
-	std::cout << d.getNumber() << std::endl;
-	std::cout << "c->getNumber() should return " << i << ": ";
-	std::cout << c->getNumber() << std::endl;
+	std::cout << "data_deserialized->getNumber() should return " << i << ": ";
+	std::cout << data_deserialized->getNumber() << std::endl;
 	std::cout << std::endl;
 
-	std::cout << "Adresses comparison :" << std::endl;
-	std::cout << "d: " << &d << std::endl;
-	std::cout << "c: " << c << std::endl;
+	std::cout << "data_deserialized adress: " << data_deserialized << std::endl;
 
 	return (0);
 }

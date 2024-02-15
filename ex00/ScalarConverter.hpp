@@ -6,7 +6,7 @@
 /*   By: larmenou <larmenou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 11:34:06 by larmenou          #+#    #+#             */
-/*   Updated: 2024/02/14 15:07:05 by larmenou         ###   ########.fr       */
+/*   Updated: 2024/02/15 08:52:23 by larmenou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ class ScalarConverter
 		static void convert(std::string str);
 };
 
-void convertDouble(std::string str, bool notInt);
+void convertDouble(std::string str);
 void convertInt(std::string str);
 void convertFloat(std::string str);
 bool isChar(std::string str);

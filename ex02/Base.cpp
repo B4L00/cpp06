@@ -6,7 +6,7 @@
 /*   By: larmenou <larmenou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 11:37:59 by larmenou          #+#    #+#             */
-/*   Updated: 2024/02/05 14:21:37 by larmenou         ###   ########.fr       */
+/*   Updated: 2024/02/15 11:19:08 by larmenou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,8 @@ void Base::identify(Base& p)
 	
 	try
 	{
-		Base &a = dynamic_cast<B&>(p);
-		(void) a;
+		Base &b = dynamic_cast<B&>(p);
+		(void) b;
 		std::cout << "B" << std::endl;
 	}
 	catch(std::exception& e)
@@ -68,8 +68,8 @@ void Base::identify(Base& p)
 
 	try
 	{
-		Base &a = dynamic_cast<C&>(p);
-		(void) a;
+		Base &c = dynamic_cast<C&>(p);
+		(void) c;
 		std::cout << "C" << std::endl;
 	}
 	catch(std::exception& e)

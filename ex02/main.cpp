@@ -6,7 +6,7 @@
 /*   By: larmenou <larmenou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:02:55 by larmenou          #+#    #+#             */
-/*   Updated: 2024/02/05 14:28:16 by larmenou         ###   ########.fr       */
+/*   Updated: 2024/02/15 11:10:02 by larmenou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int main()
 	
 		Base *p;
 		
+		std::cout << "Generate random base" << std::endl;
 		p = b.generate();
 		b.identify(p);
 
@@ -32,6 +33,7 @@ int main()
 	{
 		Base b2;
 	
+		std::cout << "Generate random base" << std::endl;
 		Base &p = *b2.generate();
 		b2.identify(p);
 		
